@@ -16,7 +16,7 @@ ou utilizando este comando (qualquer Linux):
 mkdir venv
 python -m venv venv
 source venv/bin/activate
-pip install appdirs
+pip install -r requeriments.txt
 ```
 ## Instalação
 Você pode instalar utilizando este comando:
