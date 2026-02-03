@@ -6,6 +6,6 @@ Linguagem: Python
 ## Regras
 Coloque um comentário dizendo "Gerado por IA"  
 Somente edite o main.py  
-Por favor, não adicione mais bibliotecas
-Por favor, não apague codigo sem criar outra parte para preencher a lacuna
-Por favor, não mude a lógica do jogo
+Por favor, não adicione mais bibliotecas  
+Por favor, não apague codigo sem criar outra parte para preencher a lacuna  
+Por favor, não mude a lógica do jogo  
