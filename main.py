@@ -1,70 +1,70 @@
 #!/usr/bin/env python3
-import random, appdirs, os, pathlib
+# Gerado por IA
+import appdirs
+import os
+import pathlib
+import random
+
+
+def carregar_recorde(caminho_save):
+    if caminho_save.exists():
+        with open(caminho_save) as arquivo:
+            return int(arquivo.read())
+    caminho_save.touch()
+    return 0
+
+
+def salvar_recorde(caminho_save, recorde):
+    with open(caminho_save, "w") as arquivo:
+        arquivo.write(str(recorde))
+
+
+def atualizar_recorde(pontos, recorde):
+    if pontos > recorde:
+        return pontos
+    return recorde
+
+
+def obter_pergunta(pontos):
+    if pontos < 10:
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        return a, b, a + b, f"Quanto é {a} + {b}? "
+    if pontos >= 10 and pontos < 20:
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        return a, b, a - b, f"Quanto é {a} - {b}? "
+    if pontos >= 20 and pontos < 30:
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        return a, b, a * b, f"Quanto é {a} * {b}? "
+    b = random.randint(2, 10)
+    q = random.randint(1, 10)
+    a = b * q
+    return a, b, a / b, f"Quanto é {a} / {b}? "
+
+
 pontos = 0
 user_data_dir = appdirs.user_data_dir()
 jogo_da_matematica_data_dir = f"{user_data_dir}/jogo_da_matematica"
 os.makedirs(jogo_da_matematica_data_dir, exist_ok=True)
 save = pathlib.Path(f"{jogo_da_matematica_data_dir}/save.txt")
-if save.exists():
-    with open(f"{jogo_da_matematica_data_dir}/save.txt") as f:
-        recorde = int(f.read())
-else:
-    save.touch()
-    recorde = 0
+recorde = carregar_recorde(save)
 print("Olá, Vamos Treinar Matemática?")
-try:   
+try:
     while True:
-        if pontos < 10:
-            a = random.randint(1, 10)
-            b = random.randint(1, 10)
-            resposta_correta = a + b
-            resposta = int(input(f"Quanto é {a} + {b}? "))
-            if resposta == resposta_correta:
-                print("Você Acertou!")
-                pontos += 1
-                if pontos > recorde:
-                    recorde = pontos
-            else:
+        a, b, resposta_correta, pergunta = obter_pergunta(pontos)
+        resposta = int(input(pergunta))
+        if resposta == resposta_correta:
+            print("Você Acertou!")
+            pontos += 1
+            recorde = atualizar_recorde(pontos, recorde)
+        else:
+            if pontos < 10:
                 print(f"Você Errou! A resposta era: {resposta_correta}")
-        elif pontos >= 10 and pontos < 20:
-            a = random.randint(1, 10)
-            b = random.randint(1, 10)
-            resposta_correta = a - b
-            resposta = int(input(f"Quanto é {a} - {b}? "))
-            if resposta == resposta_correta:
-                print("Você Acertou!")
-                pontos += 1
-                if pontos > recorde:
-                    recorde = pontos
             else:
                 print(f"Você Errou! A resposta era {resposta_correta}")
-        elif pontos >= 20 and pontos < 30:
-            a = random.randint(1, 10)
-            b = random.randint(1, 10)
-            resposta_correta = a * b
-            resposta = int(input(f"Quanto é {a} * {b}? "))
-            if resposta == resposta_correta:
-                print("Você Acertou!")
-                pontos += 1
-                if pontos > recorde:
-                    recorde = pontos
-            else:
-                print(f"Você Errou! A resposta era {resposta_correta}")
-        elif pontos >= 30:
-            b = random.randint(2, 10)
-            q = random.randint(1, 10)
-            a = b * q
-            resposta_correta = a / b
-            resposta = int(input(f"Quanto é {a} / {b}? "))
-            if resposta == resposta_correta:
-                print("Você Acertou!")
-                pontos += 1
-                if pontos > recorde:
-                    recorde = pontos
-            else:
-                print(f"Você Errou! A resposta era {resposta_correta}")
-        print(f"Pontos: {pontos}")        
+        print(f"Pontos: {pontos}")
         print(f"Recorde: {recorde}")
 except KeyboardInterrupt:
-    with open(f"{jogo_da_matematica_data_dir}/save.txt", "w") as f:
-        f.write(str(recorde))
+    salvar_recorde(save, recorde)
